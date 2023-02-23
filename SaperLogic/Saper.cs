@@ -35,6 +35,8 @@ class Saper
 
     private Image Closed = Image.FromFile(Directory.GetCurrentDirectory() + @"\Picture\closed.png");
 
+    private bool EndGame = false;
+
     private void AddNeighbor()
     {
         for (int i = 0; i < buttom.GetLength(0); i++)
@@ -60,7 +62,7 @@ class Saper
 
     public void ClickOpen(Point pos)
     {
-        if (buttom[pos.X, pos.Y].Open == true) return;
+        if (buttom[pos.X, pos.Y].Open == true || EndGame == true) return;
         if(buttom[pos.X, pos.Y].Bomb == true)
         {
             foreach (var item in PosBombs)
@@ -68,6 +70,7 @@ class Saper
                 buttom[item.X, item.Y].Open = true;
                 buttom[item.X, item.Y].Draw(g);
             }
+            EndGame = true;
         }
         else if (buttom[pos.X, pos.Y].NumberNeighbour != 0)
         {
@@ -87,7 +90,7 @@ class Saper
     }
     public void ClickSelect(Point pos)
     {
-        if (buttom[pos.X, pos.Y].Open == true) return;
+        if (buttom[pos.X, pos.Y].Open == true || EndGame == true) return;
 
         if(buttom[pos.X, pos.Y].Select == false && buttom[pos.X, pos.Y].I_DontKnow == false)
         {
@@ -95,7 +98,7 @@ class Saper
 
             PosSelect.Add(pos);
 
-            // Сдесь проверка победы
+            CheckWin();
 
             buttom[pos.X, pos.Y].Draw(g, SelectImage.Flaget);
         }
@@ -116,6 +119,30 @@ class Saper
         }
 
         picture.Invalidate();
+    }
+
+    private void CheckWin()
+    {
+        if(PosSelect.Count == ColVo_Bombs)
+        {
+            bool temp = false;
+            foreach (var item in PosSelect)
+            {
+                if (buttom[item.X, item.Y].Bomb == true)
+                    temp = true;
+                else
+                {
+                    temp = false;
+                    break;
+                }
+            }
+
+            if(temp == true)
+            {
+                EndGame = true;
+                // СООБЩЕНИЕ ПОБЕДЫ
+            }
+        }
     }
 
     private void OpenButtomZero(Point Now)
