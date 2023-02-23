@@ -7,18 +7,38 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
+        Set();
     }
-    private void Form1_Load(object sender, EventArgs e)
+    private int RectSZ = 50;
+
+    private Saper sap;
+    private int ColVo_Bomb = 0;
+    private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
     {
-        
+        if (e.Button == MouseButtons.Left)
+            sap.ClickOpen(e.Location);
+        else if (e.Button == MouseButtons.Right)
+            sap.ClickSelect(e.Location);       
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        button1.Text = "Reset";
+
+        Set();
+
         ResizePicture(RectSZ);
-        sap = new Saper(pictureBox1, RectSZ, 15);
+
+        sap = new Saper(pictureBox1, RectSZ, ColVo_Bomb);
 
         pictureBox1.Invalidate();
     }
-    int RectSZ = 50;
 
-    private Saper sap;
+    private void trackBar1_ValueChanged(object sender, EventArgs e)
+    {
+        SizeGrid.Text = $"Размер сетки ({trackBar1.Value} x {trackBar1.Value})";
+        RectSZ = pictureBox1.Width / trackBar1.Value;
+    }
     private void ResizePicture(int RectSZ)
     {
         var x = pictureBox1.Width % RectSZ;
@@ -39,13 +59,15 @@ public partial class Form1 : Form
         pictureBox1.Image = new Bitmap(xSZ, ySZ);
     }
 
-    private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+    private void textBox1_TextChanged(object sender, EventArgs e)
     {
-        Point pos = new Point(e.X / RectSZ, e.Y / RectSZ);
-        if (e.Button == MouseButtons.Left)
-            sap.ClickOpen(pos);
-        else if (e.Button == MouseButtons.Right)
-            sap.ClickSelect(pos);
+        Set();
+    }
+
+    private void Set()
+    {
+        ColVo_Bomb = int.TryParse(textBox1.Text, out int ColVo) ? ColVo : (RectSZ * RectSZ) / 2;
+        RectSZ = pictureBox1.Width / trackBar1.Value;
     }
 }
 

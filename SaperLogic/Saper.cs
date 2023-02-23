@@ -10,17 +10,20 @@ class Saper
     {
         this.picture = Picture;
         this.RectSZ = RectSZ;
-        this.ColVo_Bombs = ColVo_Bombs;
-
-        g = Graphics.FromImage(picture.Image);
 
         Grid = new int[picture.Width / RectSZ, picture.Height / RectSZ];
         buttom = new Buttom[picture.Width / RectSZ, picture.Height / RectSZ];
 
+        if (ColVo_Bombs >= Grid.Length)
+            ColVo_Bombs = Grid.Length-1;
+
+        g = Graphics.FromImage(picture.Image);
+        this.ColVo_Bombs = ColVo_Bombs;
         CreateGrid();
         AddNeighbor();
         Draw();
     }
+
     private OpenNeighbor openNeighbor;
     private PictureBox picture;
     private int[,] Grid;
@@ -62,6 +65,8 @@ class Saper
 
     public void ClickOpen(Point pos)
     {
+        pos = new Point(pos.X / RectSZ, pos.Y / RectSZ);
+
         if (buttom[pos.X, pos.Y].Open == true || EndGame == true) return;
         if(buttom[pos.X, pos.Y].Bomb == true)
         {
@@ -90,6 +95,7 @@ class Saper
     }
     public void ClickSelect(Point pos)
     {
+        pos = new Point(pos.X / RectSZ, pos.Y / RectSZ);
         if (buttom[pos.X, pos.Y].Open == true || EndGame == true) return;
 
         if(buttom[pos.X, pos.Y].Select == false && buttom[pos.X, pos.Y].I_DontKnow == false)
