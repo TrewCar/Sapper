@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 class Saper
@@ -24,7 +25,6 @@ class Saper
         Draw();
     }
 
-    private OpenNeighbor openNeighbor;
     private PictureBox picture;
     private int[,] Grid;
     private int RectSZ;
@@ -49,7 +49,26 @@ class Saper
                 buttom[i, j].AddPicture(GetPoint(new Point(i, j)));
             }
         }
-        openNeighbor = new OpenNeighbor(buttom);
+    }
+    List<Point> pop = new List<Point>();
+    int[,] gridesio;
+    public void Open(Point now)
+    {
+        pop.Add(now);
+        if (buttom[now.X, now.Y].NumberNeighbour != 0 || buttom[now.X, now.Y].Bomb == true) return;
+
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (ProvOutRangeArray(new Point(i, j), now))
+                    continue;
+                if (gridesio[now.X + i, now.Y + j] == 1)
+                    continue;
+                gridesio[now.X + i, now.Y + j] = 1;
+                Open(new Point(now.X +i, now.Y+j));
+            }
+        }
     }
 
     private void Draw()
@@ -84,11 +103,14 @@ class Saper
         }
         else
         {
-            List<Point> opened = openNeighbor.FindPath(pos);
-            foreach (var item in opened)
+            gridesio = new int[picture.Width / RectSZ, picture.Height / RectSZ]; 
+            Open(pos);
+            foreach (var item in pop)
             {
-                OpenButtomZero(item);
+                buttom[item.X, item.Y].Open = true;
+                buttom[item.X, item.Y].Draw(g);
             }
+            pop = new List<Point>();
         }
 
         picture.Invalidate();
@@ -147,20 +169,6 @@ class Saper
             {
                 EndGame = true;
                 // СООБЩЕНИЕ ПОБЕДЫ
-            }
-        }
-    }
-
-    private void OpenButtomZero(Point Now)
-    {
-        for (int i = -1; i <= 1; i++)
-        {
-            for (int j = -1; j <= 1; j++)
-            {
-                if (ProvOutRangeArray(new Point(i, j), Now))
-                    continue;
-                buttom[Now.X + i, Now.Y + j].Open = true;
-                buttom[Now.X + i, Now.Y + j].Draw(g);
             }
         }
     }

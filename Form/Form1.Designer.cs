@@ -87,13 +87,13 @@ partial class Form1
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(659, 121);
-            this.trackBar1.Maximum = 50;
-            this.trackBar1.Minimum = 5;
+            this.trackBar1.Maximum = 25;
+            this.trackBar1.Minimum = 10;
             this.trackBar1.Name = "trackBar1";
             this.trackBar1.Size = new System.Drawing.Size(104, 45);
             this.trackBar1.SmallChange = 5;
             this.trackBar1.TabIndex = 8;
-            this.trackBar1.Value = 5;
+            this.trackBar1.Value = 10;
             this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
             // 
             // Form1
