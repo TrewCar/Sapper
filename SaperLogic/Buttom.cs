@@ -12,7 +12,6 @@ class Buttom
     {
         RectSize = Size;
         Position = pos;
-        image = Image.FromFile(Directory.GetCurrentDirectory() + $@"\Picture\bomb.png");
     }
 
     private Point Position;
@@ -27,6 +26,11 @@ class Buttom
 
     public int NumberNeighbour { get; private set; }
     public bool Open = false;
+
+    private Image Flaget = Image.FromFile(Directory.GetCurrentDirectory() + @"\Picture\flaged.png");
+    private Image Inform = Image.FromFile(Directory.GetCurrentDirectory() + @"\Picture\inform.png");
+    private Image Opened = Image.FromFile(Directory.GetCurrentDirectory() + @"\Picture\opened.png");
+    private Image Closed = Image.FromFile(Directory.GetCurrentDirectory() + @"\Picture\closed.png");
 
     public void AddPicture(int Neighbor)
     {
@@ -44,6 +48,33 @@ class Buttom
     {
         g.DrawImage(image, Position.X * RectSize, Position.Y * RectSize, RectSize, RectSize);
     }
+    public void Draw(Graphics g , SelectImage selectimage)
+    {
+        switch (selectimage)
+        {
+            case SelectImage.Flaget:
+                g.DrawImage(Flaget, Position.X * RectSize, Position.Y * RectSize, RectSize, RectSize);
+                break;
+            case SelectImage.Inform:
+                g.DrawImage(Inform, Position.X * RectSize, Position.Y * RectSize, RectSize, RectSize);
+                break;
+            case SelectImage.Opened:
+                g.DrawImage(Opened, Position.X * RectSize, Position.Y * RectSize, RectSize, RectSize);
+                break;
+            case SelectImage.Closed:
+                g.DrawImage(Closed, Position.X * RectSize, Position.Y * RectSize, RectSize, RectSize);
+                break;
+            default:
+                break;
+        }
+    }
+}
+public enum SelectImage
+{
+    Flaget = 1,
+    Inform = 2,
+    Opened = 3,
+    Closed = 4
 }
 
 

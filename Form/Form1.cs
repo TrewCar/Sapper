@@ -42,8 +42,10 @@ public partial class Form1 : Form
     private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
     {
         Point pos = new Point(e.X / RectSZ, e.Y / RectSZ);
-
-        sap.Open(pos);
+        if (e.Button == MouseButtons.Left)
+            sap.ClickOpen(pos);
+        else if (e.Button == MouseButtons.Right)
+            sap.ClickSelect(pos);
     }
 }
 
