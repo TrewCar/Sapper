@@ -23,12 +23,15 @@ class Buttom
 
     public bool Bomb = false;
     public bool Select = false;
+    public bool I_DontKnow = false;
+
     public int NumberNeighbour { get; private set; }
     public bool Open = false;
 
     public void AddPicture(int Neighbor)
     {
-        if(Bomb == true)
+        NumberNeighbour = Neighbor;
+        if (Bomb == true)
         {
             image = Image.FromFile(Directory.GetCurrentDirectory() + $@"\Picture\bomb.png");
             return;
