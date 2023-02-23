@@ -50,7 +50,7 @@ class Saper
         }
     }
     List<Point> pop = new List<Point>();
-    int[,] gridesio;
+    int[,] gridesio; // Шел 8 час создания сапёра
     public void Open(Point now)
     {
         pop.Add(now);
