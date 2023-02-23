@@ -140,6 +140,7 @@
     <Content Include="Picture\num8.png" />
     <Content Include="Picture\opened.png" />
     <Content Include="Picture\num0.png" />
+    <Content Include="Sapper_BmMqzuDXMo.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
