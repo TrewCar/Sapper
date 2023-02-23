@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
 
 class Saper
@@ -16,7 +15,7 @@ class Saper
         buttom = new Buttom[picture.Width / RectSZ, picture.Height / RectSZ];
 
         if (ColVo_Bombs >= Grid.Length)
-            ColVo_Bombs = Grid.Length-1;
+            ColVo_Bombs = Grid.Length - 1;
 
         g = Graphics.FromImage(picture.Image);
         this.ColVo_Bombs = ColVo_Bombs;
@@ -66,16 +65,16 @@ class Saper
                 if (gridesio[now.X + i, now.Y + j] == 1)
                     continue;
                 gridesio[now.X + i, now.Y + j] = 1;
-                Open(new Point(now.X +i, now.Y+j));
+                Open(new Point(now.X + i, now.Y + j));
             }
         }
     }
 
     private void Draw()
     {
-        for (int i = 0; i < buttom.GetLength(0); i ++)
+        for (int i = 0; i < buttom.GetLength(0); i++)
         {
-            for (int j = 0; j < buttom.GetLength(1); j ++)
+            for (int j = 0; j < buttom.GetLength(1); j++)
             {
                 buttom[i, j].Draw(g, SelectImage.Closed);
             }
@@ -87,7 +86,7 @@ class Saper
         pos = new Point(pos.X / RectSZ, pos.Y / RectSZ);
 
         if (buttom[pos.X, pos.Y].Open == true || EndGame == true) return;
-        if(buttom[pos.X, pos.Y].Bomb == true)
+        if (buttom[pos.X, pos.Y].Bomb == true)
         {
             foreach (var item in PosBombs)
             {
@@ -95,6 +94,8 @@ class Saper
                 buttom[item.X, item.Y].Draw(g);
             }
             EndGame = true;
+
+            MessageBox.Show("LOSE", "YOU LOSE", MessageBoxButtons.OK);
         }
         else if (buttom[pos.X, pos.Y].NumberNeighbour != 0)
         {
@@ -103,7 +104,7 @@ class Saper
         }
         else
         {
-            gridesio = new int[picture.Width / RectSZ, picture.Height / RectSZ]; 
+            gridesio = new int[picture.Width / RectSZ, picture.Height / RectSZ];
             Open(pos);
             foreach (var item in pop)
             {
@@ -120,7 +121,7 @@ class Saper
         pos = new Point(pos.X / RectSZ, pos.Y / RectSZ);
         if (buttom[pos.X, pos.Y].Open == true || EndGame == true) return;
 
-        if(buttom[pos.X, pos.Y].Select == false && buttom[pos.X, pos.Y].I_DontKnow == false)
+        if (buttom[pos.X, pos.Y].Select == false && buttom[pos.X, pos.Y].I_DontKnow == false)
         {
             buttom[pos.X, pos.Y].Select = true;
 
@@ -151,7 +152,7 @@ class Saper
 
     private void CheckWin()
     {
-        if(PosSelect.Count == ColVo_Bombs)
+        if (PosSelect.Count == ColVo_Bombs)
         {
             bool temp = false;
             foreach (var item in PosSelect)
@@ -165,10 +166,10 @@ class Saper
                 }
             }
 
-            if(temp == true)
+            if (temp == true)
             {
                 EndGame = true;
-                // СООБЩЕНИЕ ПОБЕДЫ
+                MessageBox.Show("WIN","YOU WIN",MessageBoxButtons.OK);
             }
         }
     }
@@ -194,7 +195,7 @@ class Saper
             if (Grid[x, y] == 1) continue;
 
             buttom[x, y] = new Buttom(RectSZ, new Point(x, y)) { Bomb = true };
-            PosBombs.Add(new Point(x,y));
+            PosBombs.Add(new Point(x, y));
             Grid[x, y] = 1;
 
             CreateBombs++;
